@@ -1,0 +1,515 @@
+<% include header.ejs %>
+
+
+    <section class="content-header">
+      <h1>
+        Liste des fiches d'échantillonnage
+        <small>Campagne du poulpe</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+        <li class="active">Here</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Your Page Content Here -->
+      <div id="jsGrid"></div>
+
+    </section>
+ 
+  <!-- /.content-wrapper -->
+
+  <% include footer.ejs %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+var db = {
+
+        loadData: function(filter) {
+            return $.grep(this.clients, function(client) {
+                return (!filter.Name || client.Name.indexOf(filter.Name) > -1)
+                    && (!filter.Age || client.Age === filter.Age)
+                    && (!filter.Ville || client.Ville === filter.Ville)
+                    && (!filter.Address || client.Address.indexOf(filter.Address) > -1)
+                    && (!filter.Country || client.Country === filter.Country)
+                    && (!filter.Stade || client.Stade === filter.Stade)
+                    && (filter.Married === undefined || client.Married === filter.Married);
+            });
+        },
+
+        insertItem: function(insertingClient) {
+            this.clients.push(insertingClient);
+        },
+
+        updateItem: function(updatingClient) { },
+
+        deleteItem: function(deletingClient) {
+            var clientIndex = $.inArray(deletingClient, this.clients);
+            this.clients.splice(clientIndex, 1);
+        }
+
+    };
+
+    window.db = db;
+
+db.countries = [
+    { Name: "", Id: 0 },
+    { Name: "United States", Id: 1 },
+    { Name: "Canada", Id: 2 },
+    { Name: "United Kingdom", Id: 3 },
+    { Name: "France", Id: 4 },
+    { Name: "Brazil", Id: 5 },
+    { Name: "China", Id: 6 },
+    { Name: "Russia", Id: 7 }
+];
+
+db.stade = [
+    { Name: "", Id: 0 },
+    { Name: "stade 1", Id: 1 },
+    { Name: "stade 2", Id: 2 },
+    { Name: "stade 3", Id: 3 },
+    { Name: "stade 4", Id: 4 } 
+    
+];
+
+db.clients = [
+    {
+        "Name": "Otto Clay",
+        "Age": 61,
+        "Ville":"CASABLANCA",
+        "Country": 6,
+        "Stade": 1,
+        "Address": "Ap #897-1459 Quam Avenue",
+        "Married": false
+    },
+    {
+        "Name": "Connor Johnston",
+        "Age": 73,
+        "Ville":"CASABLANCA",
+        "Country": 7,
+        "Stade": 2,
+        "Address": "Ap #370-4647 Dis Av.",
+        "Married": false
+    },
+    {
+        "Name": "Lacey Hess",
+        "Age": 29,
+        "Ville":"RABAT",
+        "Country": 7,
+        "Stade": 3,
+        "Address": "Ap #365-8835 Integer St.",
+        "Married": false
+    },
+    {
+        "Name": "Timothy Henson",
+        "Age": 78,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "911-5143 Luctus Ave",
+        "Married": false
+    },
+    {
+        "Name": "Ramona Benton",
+        "Age": 43,
+        "Ville":"CASABLANCA",
+        "Country": 5,
+        "Stade": 4,
+        "Address": "Ap #614-689 Vehicula Street",
+        "Married": true
+    },
+    {
+        "Name": "Ezra Tillman",
+        "Age": 51,
+        "Ville":"TAZA",
+        "Country": 1,
+        "Stade": 2,
+        "Address": "P.O. Box 738, 7583 Quisque St.",
+        "Married": true
+    },
+    {
+        "Name": "Dante Carter",
+        "Age": 59,
+        "Ville":"FES",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "P.O. Box 976, 6316 Lorem, St.",
+        "Married": false
+    },
+    {
+        "Name": "Christopher Mcclure",
+        "Age": 58,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 4,
+        "Address": "847-4303 Dictum Av.",
+        "Married": true
+    }, {
+        "Name": "Otto Clay",
+        "Age": 61,
+        "Ville":"CASABLANCA",
+        "Country": 6,
+        "Stade": 1,
+        "Address": "Ap #897-1459 Quam Avenue",
+        "Married": false
+    },
+    {
+        "Name": "Connor Johnston",
+        "Age": 73,
+        "Ville":"CASABLANCA",
+        "Country": 7,
+        "Stade": 2,
+        "Address": "Ap #370-4647 Dis Av.",
+        "Married": false
+    },
+    {
+        "Name": "Lacey Hess",
+        "Age": 29,
+        "Ville":"RABAT",
+        "Country": 7,
+        "Stade": 3,
+        "Address": "Ap #365-8835 Integer St.",
+        "Married": false
+    },
+    {
+        "Name": "Timothy Henson",
+        "Age": 78,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "911-5143 Luctus Ave",
+        "Married": false
+    },
+    {
+        "Name": "Ramona Benton",
+        "Age": 43,
+        "Ville":"CASABLANCA",
+        "Country": 5,
+        "Stade": 4,
+        "Address": "Ap #614-689 Vehicula Street",
+        "Married": true
+    },
+    {
+        "Name": "Ezra Tillman",
+        "Age": 51,
+        "Ville":"TAZA",
+        "Country": 1,
+        "Stade": 2,
+        "Address": "P.O. Box 738, 7583 Quisque St.",
+        "Married": true
+    },
+    {
+        "Name": "Dante Carter",
+        "Age": 59,
+        "Ville":"FES",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "P.O. Box 976, 6316 Lorem, St.",
+        "Married": false
+    }, {
+        "Name": "Otto Clay",
+        "Age": 61,
+        "Ville":"CASABLANCA",
+        "Country": 6,
+        "Stade": 1,
+        "Address": "Ap #897-1459 Quam Avenue",
+        "Married": false
+    },
+    {
+        "Name": "Connor Johnston",
+        "Age": 73,
+        "Ville":"CASABLANCA",
+        "Country": 7,
+        "Stade": 2,
+        "Address": "Ap #370-4647 Dis Av.",
+        "Married": false
+    },
+    {
+        "Name": "Lacey Hess",
+        "Age": 29,
+        "Ville":"RABAT",
+        "Country": 7,
+        "Stade": 3,
+        "Address": "Ap #365-8835 Integer St.",
+        "Married": false
+    },
+    {
+        "Name": "Timothy Henson",
+        "Age": 78,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "911-5143 Luctus Ave",
+        "Married": false
+    },
+    {
+        "Name": "Ramona Benton",
+        "Age": 43,
+        "Ville":"CASABLANCA",
+        "Country": 5,
+        "Stade": 4,
+        "Address": "Ap #614-689 Vehicula Street",
+        "Married": true
+    },
+    {
+        "Name": "Ezra Tillman",
+        "Age": 51,
+        "Ville":"TAZA",
+        "Country": 1,
+        "Stade": 2,
+        "Address": "P.O. Box 738, 7583 Quisque St.",
+        "Married": true
+    },
+    {
+        "Name": "Dante Carter",
+        "Age": 59,
+        "Ville":"FES",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "P.O. Box 976, 6316 Lorem, St.",
+        "Married": false
+    }, {
+        "Name": "Otto Clay",
+        "Age": 61,
+        "Ville":"CASABLANCA",
+        "Country": 6,
+        "Stade": 1,
+        "Address": "Ap #897-1459 Quam Avenue",
+        "Married": false
+    },
+    {
+        "Name": "Connor Johnston",
+        "Age": 73,
+        "Ville":"CASABLANCA",
+        "Country": 7,
+        "Stade": 2,
+        "Address": "Ap #370-4647 Dis Av.",
+        "Married": false
+    },
+    {
+        "Name": "Lacey Hess",
+        "Age": 29,
+        "Ville":"RABAT",
+        "Country": 7,
+        "Stade": 3,
+        "Address": "Ap #365-8835 Integer St.",
+        "Married": false
+    },
+    {
+        "Name": "Timothy Henson",
+        "Age": 78,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "911-5143 Luctus Ave",
+        "Married": false
+    },
+    {
+        "Name": "Ramona Benton",
+        "Age": 43,
+        "Ville":"CASABLANCA",
+        "Country": 5,
+        "Stade": 4,
+        "Address": "Ap #614-689 Vehicula Street",
+        "Married": true
+    },
+    {
+        "Name": "Ezra Tillman",
+        "Age": 51,
+        "Ville":"TAZA",
+        "Country": 1,
+        "Stade": 2,
+        "Address": "P.O. Box 738, 7583 Quisque St.",
+        "Married": true
+    },
+    {
+        "Name": "Dante Carter",
+        "Age": 59,
+        "Ville":"FES",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "P.O. Box 976, 6316 Lorem, St.",
+        "Married": false
+    }, {
+        "Name": "Otto Clay",
+        "Age": 61,
+        "Ville":"CASABLANCA",
+        "Country": 6,
+        "Stade": 1,
+        "Address": "Ap #897-1459 Quam Avenue",
+        "Married": false
+    },
+    {
+        "Name": "Connor Johnston",
+        "Age": 73,
+        "Ville":"CASABLANCA",
+        "Country": 7,
+        "Stade": 2,
+        "Address": "Ap #370-4647 Dis Av.",
+        "Married": false
+    },
+    {
+        "Name": "Lacey Hess",
+        "Age": 29,
+        "Ville":"RABAT",
+        "Country": 7,
+        "Stade": 3,
+        "Address": "Ap #365-8835 Integer St.",
+        "Married": false
+    },
+    {
+        "Name": "Timothy Henson",
+        "Age": 78,
+        "Ville":"CASABLANCA",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "911-5143 Luctus Ave",
+        "Married": false
+    },
+    {
+        "Name": "Ramona Benton",
+        "Age": 43,
+        "Ville":"CASABLANCA",
+        "Country": 5,
+        "Stade": 4,
+        "Address": "Ap #614-689 Vehicula Street",
+        "Married": true
+    },
+    {
+        "Name": "Ezra Tillman",
+        "Age": 51,
+        "Ville":"TAZA",
+        "Country": 1,
+        "Stade": 2,
+        "Address": "P.O. Box 738, 7583 Quisque St.",
+        "Married": true
+    },
+    {
+        "Name": "Dante Carter",
+        "Age": 59,
+        "Ville":"FES",
+        "Country": 1,
+        "Stade": 1,
+        "Address": "P.O. Box 976, 6316 Lorem, St.",
+        "Married": false
+    }
+];
+
+$("#jsGrid").jsGrid({
+       
+         
+        width: "100%",
+        filtering: true,
+        editing: true,
+        inserting: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 15,
+        pageButtonCount: 5,
+        controller: db,
+ 
+        deleteConfirm: "Do you really want to delete the client?",
+ 
+        controller: db,
+ 
+        fields: [
+            { name: "Name", title: "Nom", type: "text", width: 150, validate: "required"  },
+            { name: "Age", title: "Âge", type: "number", width: 50 , validate: { validator: "range", param: [18,80] }},
+            { name: "Ville", title: "La ville", type: "text", width: 150, validate: "required"  },
+            { name: "Address", title: "Adresse", type: "text", width: 200, validate: { validator: "rangeLength", param: [10, 250] }  },
+            { name: "Country", title: "Pays", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
+            { name: "Stade", title: "Stade de maturité", type: "select", items: db.stade, valueField: "Id", textField: "Name" },
+            { name: "Married", title: "Marié", type: "checkbox", title: "Is Married", sorting: false },
+            { type: "control" }
+        ]
+    });
+
+var gridSettings = JSON.parse(localStorage.getItem("gridSettings"));
+var grid = $("#jsGrid").data("JSGrid");
+
+grid.search(gridSettings.filter).done(function() {
+    grid.sort({
+        field: gridSettings.sorting.sortField,
+        order: gridSettings.sorting.sortOrder
+    }).done(function() {
+        grid.option("pageIndex", gridSettings.pageIndex);
+    });
+});
+
+$("#saveSettings").on("click", function() {
+    localStorage.setItem("gridSettings", JSON.stringify({
+        sorting: grid._sortingParams(),
+        pageIndex: grid.option("pageIndex"),
+        filter: grid.getFilter()
+    }));
+});
+
+
+$("#jsGrid").jsGrid({
+        height: "100%",
+        width: "100%",
+ 
+        filtering: true,
+        autoload: true,
+ 
+        controller: db,
+    
+        fields: [
+            { 
+                name: "Name", 
+                type: "textarea", 
+                width: 150 
+            }, { 
+                name: "Country", 
+                type: "select", 
+                items: db.countries,
+                valueField: "Id",
+                textField: "Name",
+                filterTemplate: function() {
+                    var statesField = this._grid.fields[2];
+                    var $filterControl = jsGrid.fields.select.prototype.filterTemplate.call(this);
+                    
+                    $filterControl.on("change", function() {
+                        var selectedCountry = parseInt($(this).val(), 10);
+                        var countryStates = $.grep(db.countries, function(country) {
+                            return country.Id === selectedCountry;
+                        })[0].States;
+                        
+                        statesField.items = $.grep(db.states, function(state) {
+                            return $.inArray(state.Id, countryStates) > -1 || state.Id === 0;
+                        });
+                        
+                        $(".states-filter").empty()
+                            .append(statesField.filterTemplate());
+                    });
+                    
+                    return $filterControl;
+                }
+            }, { 
+                name: "State", 
+                type: "select", 
+                items: db.states,
+                valueField: "Id", 
+                textField: "Name",
+                filtercss: "states-filter"
+            }
+        ]
+    });
+</script>
